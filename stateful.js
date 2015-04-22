@@ -40,8 +40,7 @@
 
         state = possibleStates[stateName];
         if (stateName && !state) {
-          console.warn('That state is not defined for this object.');
-          return false;
+          throw new Error('That state is not defined for this object.');
         }
 
         if (isFunction(this.exitState)) {
@@ -51,7 +50,7 @@
         if (currentState !== null) {
           for (k in currentState) {
             if (currentState.hasOwnProperty(k)) {
-              this[k] = void 0;
+              delete this[k];
             }
           }
         }

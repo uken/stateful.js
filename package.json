@@ -1,0 +1,27 @@
+{
+  "name": "stateful.js",
+  "version": "1.0.0",
+  "description": "Turns your JavaScript objects into little state machines.",
+  "main": "stateful.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uken/stateful.js.git"
+  },
+  "keywords": [
+    "state",
+    "machine"
+  ],
+  "author": "Tanner Rogalsky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uken/stateful.js/issues"
+  },
+  "homepage": "https://github.com/uken/stateful.js",
+  "devDependencies": {
+    "better-assert": "^1.0.2",
+    "mocha": "^2.2.4"
+  }
+}

@@ -1,4 +1,6 @@
 (function(){'use strict';
+  var slice = [].slice;
+
   var extend = function(a, b) {
     var results = [];
 
@@ -32,7 +34,7 @@
       klass.prototype.gotoState = function() {
         var currentState, state;
         var stateName = arguments[0];
-        var args = 2 <= arguments.length ? arguments.slice(1) : [];
+        var args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
 
         if (currentStateName !== null) {
           currentState = possibleStates[currentStateName];

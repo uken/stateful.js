@@ -65,13 +65,19 @@ describe('Stateful', function(){'use strict';
           testInstance.should.not.have.property('testProperty');
         });
 
-        it('calls `enterState` and `exitState` if they exist', function(){
+        it('calls the transition callbacks if they exist', function(){
           testInstance.gotoState('TestState');
           var enterState = testInstance.enterState;
           var exitState = testInstance.exitState;
-          enterState.calledOnce.should.be(true);
+          enterState.calledOnce.should.eql(true);
           testInstance.gotoState();
-          exitState.calledOnce.should.be(true);
+          exitState.calledOnce.should.eql(true);
+        });
+
+        it('passes its arguments to the transition callbacks', function(){
+          var testArgument = 'test argument';
+          testInstance.gotoState('TestState', testArgument);
+          testInstance.enterState.calledWith(testArgument).should.eql(true);
         });
       });
     });

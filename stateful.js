@@ -83,4 +83,4 @@
   } else {
     this.Stateful = Stateful;
   }
-})();
+}).call(this);

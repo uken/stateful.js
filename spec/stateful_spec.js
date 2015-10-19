@@ -1,5 +1,3 @@
-/*global describe, it, beforeEach */
-
 require('should');
 var sinon = require('sinon');
 var Stateful = require('../stateful');

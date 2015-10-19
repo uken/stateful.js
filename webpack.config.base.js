@@ -7,7 +7,7 @@ module.exports = {
     ]
   },
   output: {
-    library: 'Redux',
+    library: 'Stateful',
     libraryTarget: 'umd'
   },
   resolve: {

@@ -23,7 +23,7 @@ const Stateful = {
       const currentState = possibleStates[currentStateName];
       const state = possibleStates[stateName];
 
-      if (stateName && !state) {
+      if (process.env.NODE_ENV === "development" && stateName && !state) {
         throw new Error('That state is not defined for this object.');
       }
 

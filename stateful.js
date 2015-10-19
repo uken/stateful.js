@@ -1,86 +1,60 @@
-(function(){'use strict';
-  var slice = [].slice;
+import WeakMap from 'core-js/library/es6/weak-map';
 
-  var extend = function(a, b) {
-    var results = [];
+const FUNCTION_TYPE = 'function';
+const isFunction = function(func) {
+  return typeof func === FUNCTION_TYPE;
+};
 
-    for (var k in b) {
-      if (b.hasOwnProperty(k)){
-        var v = b[k];
-        results.push(a[k] = v);
+const Stateful = {
+  extend(klass) {
+    const currentStateNames = new WeakMap();
+    const originalPrototype = {};
+    const possibleStates = {};
+
+    for (const k in klass.prototype) {
+      if (klass.prototype.hasOwnProperty(k)) {
+        const v = klass.prototype[k];
+        originalPrototype[k] = v;
       }
     }
 
-    return results;
-  };
+    klass.prototype.gotoState = function(stateName, ...args) {
+      const currentStateName = currentStateNames.get(this);
+      const currentState = possibleStates[currentStateName];
+      const state = possibleStates[stateName];
 
-  var isFunction = function(func) {
-    return typeof func === 'function';
-  };
-
-  var Stateful = {
-    extend: function(klass) {
-      var currentStateName = null;
-      var originalPrototype = {};
-      var possibleStates = {};
-
-      for (var k in klass.prototype) {
-        if (klass.prototype.hasOwnProperty(k)) {
-          var v = klass.prototype[k];
-          originalPrototype[k] = v;
-        }
+      if (stateName && !state) {
+        throw new Error('That state is not defined for this object.');
       }
 
-      klass.prototype.gotoState = function() {
-        var currentState, state;
-        var stateName = arguments[0];
-        var args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+      if (isFunction(this.exitState)) {
+        this.exitState();
+      }
 
-        if (currentStateName !== null) {
-          currentState = possibleStates[currentStateName];
-        }
-
-        state = possibleStates[stateName];
-        if (stateName && !state) {
-          throw new Error('That state is not defined for this object.');
-        }
-
-        if (isFunction(this.exitState)) {
-          this.exitState();
-        }
-
-        if (currentState !== null) {
-          for (k in currentState) {
-            if (currentState.hasOwnProperty(k)) {
-              delete this[k];
-            }
+      if (currentState !== null) {
+        for (const k in currentState) {
+          if (currentState.hasOwnProperty(k)) {
+            Reflect.deleteProperty(this, k);
           }
         }
+      }
 
-        if (state) {
-          extend(this, state);
-        } else {
-          extend(this, originalPrototype);
-        }
+      if (state) {
+        Object.assign(this, state);
+      } else {
+        Object.assign(this, originalPrototype);
+      }
 
-        currentStateName = stateName;
-        if (isFunction(this.enterState)) {
-          this.enterState.apply(this, args);
-        }
-      };
+      currentStateNames.set(this, stateName);
+      if (isFunction(this.enterState)) {
+        this.enterState(...args);
+      }
+    };
 
-      klass.addState = function(stateName, state) {
-        possibleStates[stateName] = state;
-      };
-    }
-  };
-
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = Stateful;
-    }
-    exports.Stateful = Stateful;
-  } else {
-    this.Stateful = Stateful;
+    klass.addState = function(stateName, state) {
+      possibleStates[stateName] = state;
+    };
   }
-}).call(this);
+};
+
+export default Stateful;

@@ -81,5 +81,40 @@ describe('Stateful', function(){'use strict';
         });
       });
     });
+
+    describe('Multiples Stateful Instances', function() {
+      var testInstances;
+
+      beforeEach(function(){
+        TestClass.addState('TestState1', {
+          enterState: sinon.spy(),
+          testProperty1: sinon.spy(),
+          exitState: sinon.spy()
+        });
+        TestClass.addState('TestState2', {
+          enterState: sinon.spy(),
+          testProperty2: sinon.spy(),
+          exitState: sinon.spy()
+        });
+
+        testInstances = new Array(5);
+        for (var i = 0; i < testInstances.length; i++) {
+          testInstances[i] = new TestClass();
+        }
+      });
+
+      describe('#gotoState', function(){
+        it('only sets the current state for the instance on which it was called', function(){
+          var testInstance1 = testInstances[0];
+          testInstance1.gotoState('TestState1');
+
+          var testInstance2 = testInstances[1];
+          testInstance2.gotoState('TestState2');
+
+          testInstance1.gotoState('TestState2');
+          testInstance1.should.not.have.property('testProperty1');
+        });
+      });
+    });
   });
 });

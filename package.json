@@ -4,7 +4,7 @@
   "description": "Turns your JavaScript objects into little state machines.",
   "main": "stateful.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha spec"
+    "test": "./node_modules/mocha/bin/mocha --compilers js:babel/register spec",
     "lint": "./node_modules/eslint/bin/eslint.js ."
   },
   "repository": {
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/uken/stateful.js",
   "devDependencies": {
+    "babel": "^5.8.23",
     "eslint": "^1.7.1",
     "mocha": "^2.2.4",
     "should": "^6.0.1",

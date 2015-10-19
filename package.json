@@ -5,6 +5,7 @@
   "main": "stateful.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha spec"
+    "lint": "./node_modules/eslint/bin/eslint.js ."
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/uken/stateful.js",
   "devDependencies": {
+    "eslint": "^1.7.1",
     "mocha": "^2.2.4",
     "should": "^6.0.1",
     "sinon": "^1.14.1"

@@ -1,0 +1,8 @@
+*.log
+/.*/
+/spec/
+/.eslint*
+/.gitignore
+/.npmignore
+/.travis.yml
+/webpack.*

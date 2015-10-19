@@ -1,6 +1,6 @@
 require('should');
 var sinon = require('sinon');
-var Stateful = require('../stateful');
+var Stateful = require('../src/index.js');
 
 describe('Stateful', function(){'use strict';
   describe('#extend(Class)', function(){
